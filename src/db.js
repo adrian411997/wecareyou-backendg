@@ -3,7 +3,7 @@ const { Sequelize, Op } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
-const { DB_USER, DB_HOST, DB_PASSWORD } = process.env;
+const { DB_NAME, DB_USER, DB_HOST, DB_PASSWORD } = process.env;
 let sequelize = new Sequelize({
   database: DB_NAME,
   dialect: "postgres",
@@ -11,20 +11,12 @@ let sequelize = new Sequelize({
   port: 5432,
   username: DB_USER,
   password: DB_PASSWORD,
-  pool: {
-    max: 3,
-    min: 1,
-    idle: 10000,
-  },
+  pool: { max: 3, min: 1, iddle: 100 },
   dialectOptions: {
-    ssl: {
-      require: true,
-      // Ref.: https://github.com/brianc/node-postgres/issues/2009
-      rejectUnauthorized: false,
-    },
+    ssl: { require: false, rejectUnauthorized: false },
     keepAlive: true,
   },
-  ssl: true,
+  ssl: false,
 });
 const basename = path.basename(__filename);
 
